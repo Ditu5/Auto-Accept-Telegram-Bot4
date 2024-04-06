@@ -19,12 +19,12 @@
 
 ### Heruko Deploy
 
-<a href="https://heroku.com/deploy?template=https://github.com/Snowball-0/Auto-Accept-Telegram-Bot">
+<a href="https://heroku.com/deploy?template=https://github.com/Snowball-01/Auto-Accept-Telegram-Bot">
   <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
 </a>
 
 ### Render Deploy
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Snowball-0/Auto-Accept-Telegram-Bot)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Snowball-01/Auto-Accept-Telegram-Bot)
 
 ## Config Varies
 
