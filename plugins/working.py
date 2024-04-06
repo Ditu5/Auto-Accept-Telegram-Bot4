@@ -10,6 +10,11 @@ from pyrogram.errors import FloodWait
 logging.basicConfig(level=logging.ERROR)
 
 
+
+async def start_user_bot(userBot):
+    await userBot.start()
+    return userBot
+
 async def approve_func(bot, message):
     try:
         chat = message.chat
@@ -41,14 +46,16 @@ async def approve_func(bot, message):
 async def handle_autoAccept(bot: Client, message: ChatJoinRequest):
     admin_permission = await db.get_bool_auto_accept(Config.ADMIN)
     admin_channel_permission = await db.get_admin_channels()
-    print(admin_channel_permission[f'{message.chat.id}'])
-    if admin_permission and admin_channel_permission[f'{message.chat.id}']:
+    channel_permission = admin_channel_permission[f'{message.chat.id}']
+    if admin_permission and channel_permission:
         try:
             await approve_func(bot, message)
         except FloodWait:
             await approve_func(bot, message)
                 
-                
+    else:
+        pass
+    
 @Client.on_chat_member_updated()
 async def handle_chat(bot: Client, update: ChatMemberUpdated):
     left_user = update.old_chat_member
