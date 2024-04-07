@@ -10,7 +10,6 @@ import asyncio
 import logging
 import datetime
 from pyromod.exceptions import ListenerTimeout
-from .working import start_user_bot
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -127,75 +126,41 @@ async def handle_declineall(bot: Client, message: Message):
 @Client.on_callback_query(filters.regex('^acceptallchat_'))
 async def handle_accept_pending_request(bot: Client, update: CallbackQuery):
     # await update.message.delete()
+    chat_id = update.data.split('_')[1]
+    ms = await update.message.edit("**Please Wait Accepting the peding requests. ♻️**")
     try:
-        chat_id = update.data.split('_')[1]
-        try:
-            await start_user_bot(userBot=user)
-        except:
-            pass
-        ms = await update.message.edit("**Please Wait Accepting the peding requests. ♻️**")
-        try:
-            while True:
-                try:
-                    await user.approve_all_chat_join_requests(chat_id=chat_id)
-                except FloodWait as t:
-                    asyncio.sleep(t.value)
-                    await user.approve_all_chat_join_requests(chat_id=chat_id)
-                except:
-                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
-                    pass
-        except FloodWait:
-            while True:
-                try:
-                    await user.approve_all_chat_join_requests(chat_id=chat_id)
-                except FloodWait as t:
-                    asyncio.sleep(t.value)
-                    await user.approve_all_chat_join_requests(chat_id=chat_id)
-                except:
-                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
-                    pass
-        except Exception as e:
-            await user.stop()
-            await update.message.reply_text(f"**Task Completed** ✓ **Approved ✅ All Pending Join Request**")
-            await ms.delete()
+        while True:
+            try:
+                await user.approve_all_chat_join_requests(chat_id=chat_id)
+            except FloodWait as t:
+                asyncio.sleep(t.value)
+                await user.approve_all_chat_join_requests(chat_id=chat_id)
+            except Exception as e:
+                print('Error on line {}'.format(
+                    sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
+                pass
 
-    except Exception as e:
-        await user.stop()
-        print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
+                pass
+    except:
+        await update.message.reply_text(f"**Task Completed** ✓ **Approved ✅ All Pending Join Request**")
+        await ms.delete()
+
 
 @Client.on_callback_query(filters.regex('^declineallchat_'))
 async def handle_delcine_pending_request(bot: Client, update: CallbackQuery):
+    ms = await update.message.edit("**Please Wait Declining all the peding requests. ♻️**")
+    chat_id = update.data.split('_')[1]
+
     try:
-        ms = await update.message.edit("**Please Wait Declining all the peding requests. ♻️**")
-        chat_id = update.data.split('_')[1]
-        try:
-            await start_user_bot(userBot=user)
-        except:
-            pass
-        
-        try:
-            while True:
-                try:
-                    await user.decline_all_chat_join_requests(chat_id=chat_id)
-                except FloodWait as t:
-                    asyncio.sleep(t.value)
-                    await user.decline_all_chat_join_requests(chat_id=chat_id)
-                except:
-                    pass
-                    
-        except FloodWait as t:
-            while True:
-                try:
-                    await user.decline_all_chat_join_requests(chat_id=chat_id)
-                except FloodWait as t:
-                    asyncio.sleep(t.value)
-                    await user.decline_all_chat_join_requests(chat_id=chat_id)
-                except:
-                    pass
-        
-        except Exception as e:
-            await user.stop()
-            await ms.delete()
-            await update.message.reply_text("**Task Completed** ✓ **Declined ❌ All The Pending Join Request**")
+        while True:
+            try:
+                await user.decline_all_chat_join_requests(chat_id=chat_id)
+            except FloodWait as t:
+                asyncio.sleep(t.value)
+                await user.decline_all_chat_join_requests(chat_id=chat_id)
+            except:
+                pass
+
     except:
-        await user.stop()
+        await ms.delete()
+        await update.message.reply_text("**Task Completed** ✓ **Declined ❌ All The Pending Join Request**")
