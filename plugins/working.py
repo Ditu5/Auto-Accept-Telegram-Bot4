@@ -11,10 +11,6 @@ logging.basicConfig(level=logging.ERROR)
 
 
 
-async def start_user_bot(userBot):
-    await userBot.start()
-    return userBot
-
 async def approve_func(bot, message):
     try:
         chat = message.chat
