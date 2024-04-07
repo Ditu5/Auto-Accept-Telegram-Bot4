@@ -5,3 +5,4 @@ Pyrogram
 TgCrypto
 pyproject-toml
 pytz
+pyromod
